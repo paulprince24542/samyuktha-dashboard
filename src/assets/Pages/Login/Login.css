@@ -1,0 +1,36 @@
+.login-box {
+  background-color: rgb(22, 105, 201);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 450px;
+  height: 400px;
+  margin-top: 40px;
+  border-radius: 20px;
+}
+
+.tx {
+  height: 100vh;
+}
+
+.login-box input {
+  width: 360px;
+  height: 40px;
+  border: none;
+}
+
+.login-box button {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 50%;
+}
+
+.login-box h2 {
+  color: white;
+  margin-bottom: 30px;
+}
+
+.login-box label {
+  color: white;
+}
