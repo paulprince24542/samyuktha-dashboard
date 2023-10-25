@@ -1,0 +1,22 @@
+.sidebar-links {
+  background-color: rgb(255, 255, 255);
+  padding: 10px;
+  color: rgb(6, 1, 1);
+  transition: 0.3s;
+  text-align: left;
+  padding-left: 40px;
+}
+
+.sidebar-links:hover {
+  background-color: rgb(117, 28, 219);
+  cursor: pointer;
+  color: white;
+}
+
+.offcanvas {
+}
+
+.offcanvas-body {
+  padding: unset;
+  margin-top: 20px;
+}
