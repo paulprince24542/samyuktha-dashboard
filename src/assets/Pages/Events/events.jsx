@@ -17,7 +17,7 @@ const Events = () => {
   const [data, setData] = useState([]);
   const [event, setEventName] = useState("qwdwqd");
   const [count, setCount] = useState(0);
-  const [status, setStatus] = useState(true);
+  const [status, setStatus] = useState(false);
 
   const [searchParams] = useSearchParams();
 
@@ -34,8 +34,8 @@ const Events = () => {
         setData(responseJson.data);
         localStorage.setItem("eventname", responseJson.data[0].eventname);
         setCount(1);
-        if (responseJson.data.length == 0) {
-          setStatus(false);
+        if (responseJson.data.length > 0) {
+          setStatus(true);
         }
       } catch (err) {
         console.log(err);
@@ -49,8 +49,8 @@ const Events = () => {
         setData(responseJson.data);
         localStorage.setItem("eventname", "New");
         setCount(2);
-        if (responseJson.data.length == 0) {
-          setStatus(false);
+        if (responseJson.data.length > 0) {
+          setStatus(true);
         }
       } catch (err) {
         console.log(err);
@@ -137,11 +137,16 @@ const Events = () => {
                     <td>{d.participant5name || "Null"}</td>
                     <td>{JSON.stringify(d.paymentpaid)}</td>
                     <td className="d-flex justify-content-evenly flex-column">
-                      <button type="button" className="mb-2 btn btn-success">
+                      {/* <button type="button" className="mb-2 btn btn-success">
                         Send Mail
-                      </button>
-                      <button type="button" className="mb-2 btn btn-primary">
-                        Change
+                      </button> */}
+                      <button
+                        type="button"
+                        className="mb-2 btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal1"
+                      >
+                        Edit
                       </button>
                       <button
                         type="button"
@@ -190,8 +195,13 @@ const Events = () => {
                     <td>{d.collegename}</td>
                     <td>{JSON.stringify(d.paymentpaid)}</td>
                     <td className="d-flex justify-content-evenly">
-                      <button type="button" className="btn btn-primary">
-                        Change
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                      >
+                        Edit
                       </button>
                       <button
                         type="button"
@@ -213,6 +223,84 @@ const Events = () => {
             )}
           </table>
         )}
+
+        {/* Single Event Edit Modal Start */}
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Modal title
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">...</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Single Event Edit Modal End */}
+
+        {/* Group Event Edit Modal Start */}
+        <div
+          class="modal fade"
+          id="exampleModal1"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Modal title
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">...</div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Group Event Edit Modal End */}
       </div>
     </>
   );
