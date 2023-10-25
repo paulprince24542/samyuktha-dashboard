@@ -6,22 +6,22 @@ import { useParams, useSearchParams } from "react-router-dom";
 
 const Events = () => {
   const [data, setData] = useState([]);
-  const [event, setEventName] = useState("");
+  const [event, setEventName] = useState("qwdwqd");
 
   const [searchParams] = useSearchParams();
-  console.log(searchParams.get("id"));
+  console.log(searchParams.get("eventid"));
 
   async function getList() {
-    var url = `http://localhost:8888/v1/api/admin/events/single/${searchParams.get(
-      "id"
+    var url = `https://samyuktha-admin-api.netlify.app/v1/admin/event/single/?eventid=${searchParams.get(
+      "eventid"
     )}`;
     var response = await fetch(url);
     try {
       const responseJson = await response.json();
-      console.log();
-      setEventName(responseJson[0].eventname);
-      setData(responseJson);
-     
+      console.log(responseJson)
+      // setEventName(responseJson.data[0]);
+      setData(responseJson.data);
+      // console.log(data)
     } catch (err) {
       console.log(err);
     }

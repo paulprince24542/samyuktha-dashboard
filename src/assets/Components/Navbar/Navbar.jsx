@@ -3,6 +3,64 @@ import "./Navbar.css";
 import "./custom.scss";
 
 const Navbar = () => {
+  var navlink = [
+    {
+      name: "Star Of Samyuktha",
+      id: "4efbe19c-12a9-4670-95e7-eb6f1cf8bccc",
+    },
+    {
+      name: "30s Reel",
+      id: "44195d64-24f6-4d6e-9ae1-1609bcb82915",
+    },
+    {
+      name: "Ideathon",
+      id: "5f32aa49-a0bb-4ce7-af96-2db5266f4753",
+    },
+    {
+      name: "Web Designing",
+      id: "5faf4f42-fee6-4c80-bb70-5d4e022d4c7a",
+    },
+    {
+      name: "Best Singer",
+      id: "72c9450f-c062-4115-85d1-7262474b6d92",
+    },
+    {
+      name: "Technical Quiz",
+      id: "831868d2-a0ee-4cd9-bcb6-bc352774a7c1",
+    },
+    {
+      name: "Spot Dance",
+      id: "71061614-199e-40e4-9659-8d57528af0c1",
+    },
+    {
+      name: "Treasure Hunt",
+      id: "c3e39edf-62a1-473e-9e3c-9ad9e67913f1",
+    },
+    {
+      name: "Footbal 3 *3",
+      id: "91464529-6176-45b7-9b60-d40b7e9415fc",
+    },
+    {
+      name: "Photography",
+      id: "410a1bc0-050d-4a04-b99f-3b94c0b0d6b4",
+    },
+    {
+      name: "Word Hunt",
+      id: "a6cb9012-0705-4053-8bd8-dfc11dee3e60",
+    },
+    {
+      name: "Fast Typing",
+      id: "f92dbfc2-0838-448e-9ee9-3c81e501fa1f",
+    },
+    {
+      name: "Coding UG",
+      id: "6fb6e213-31f9-4c39-8bf7-516079a98c1e",
+    },
+    {
+      name: "Coding PG",
+      id: "ca2b6db4-50a4-4422-b857-c01fe719b9d8",
+    },
+  ];
   return (
     <div>
       <div className="container-fluid">
@@ -48,8 +106,13 @@ const Navbar = () => {
             ></button>
           </div>
           <div className="offcanvas-body">
-            <div className="sidebar-links">Star Of Samyuktha</div>
-            <div className="sidebar-links">Ideathon</div>
+            {navlink.map((navdata) => (
+              <a href={"/events/?eventid=" + navdata.id}>
+                <div className="sidebar-links">{navdata.name}</div>
+              </a>
+            ))}
+
+            {/* <div className="sidebar-links">Ideathon</div>
             <div className="sidebar-links">Web Designing</div>
             <div className="sidebar-links">Best Singer</div>
             <div className="sidebar-links">Technical Quiz</div>
@@ -59,7 +122,7 @@ const Navbar = () => {
             <div className="sidebar-links">Photography</div>
             <div className="sidebar-links">Code Crypt</div>
             <div className="sidebar-links">Word Hunt</div>
-            <div className="sidebar-links">Speed Typing</div>
+            <div className="sidebar-links">Speed Typing</div> */}
           </div>
         </div>
       </div>

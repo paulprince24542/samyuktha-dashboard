@@ -5,6 +5,13 @@
   transition: 0.3s;
   text-align: left;
   padding-left: 40px;
+  text-decoration: none;
+  
+}
+
+.offcanvas-body a {
+  text-decoration: none;
+  color: black;
 }
 
 .sidebar-links:hover {
