@@ -5,8 +5,13 @@ import axios from "axios";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { URL_endpoint } from "../../../config";
 
+// import SingleModalEdit from "../../Components/Modals/SingleModalEdit";
+// import GroupModalEdit from "../../Components/Modals/GroupModalEdit";
+
 const Events = () => {
   const Navigate = useNavigate();
+
+  //Input States
 
   // User Authorization
   useEffect(() => {
@@ -22,6 +27,18 @@ const Events = () => {
   const [count, setCount] = useState(0);
   const [status, setStatus] = useState(false);
   const [deleteValue, setDeleteValue] = useState();
+
+  var [userid, setUserid] = useState("");
+  var [email, setEmail] = useState("");
+  var [name, setName] = useState("");
+  var [phone, setPhone] = useState("");
+  var [college, setCollege] = useState("");
+  var [course, setCourse] = useState("");
+  var [participant2, setParticipant2] = useState("");
+  var [participant3, setParticipant3] = useState("");
+  var [participant4, setParticipant4] = useState("");
+  var [participant5, setParticipant5] = useState("");
+  var [payment, setPayment] = useState();
 
   const [searchParams] = useSearchParams();
 
@@ -66,9 +83,8 @@ const Events = () => {
   }, []);
   var i = 0;
 
+  // Delete Participant
   async function deleteParticipant(id) {
-    console.log("Deleting");
-    console.log(id);
     if (count == 1) {
       const rawResponse = await fetch(
         `${URL_endpoint}/v1/admin/event/delete/single`,
@@ -98,6 +114,94 @@ const Events = () => {
       );
       const content = await rawResponse.json();
       console.log(content);
+      window.location.reload(false);
+    }
+  }
+
+  function editSingleValues(data) {
+    setEmail(data.participantemail);
+    setName(data.participantname);
+    setPhone(data.participantphone);
+    setCourse(data.coursename);
+    setCollege(data.collegename);
+    setPayment(data.paymentpaid);
+    setUserid(data.id);
+  }
+
+  async function submitSingleValues(e) {
+    var eventid = searchParams.get("eventid");
+    e.preventDefault();
+    const rawResponse = await fetch(
+      `${URL_endpoint}/v1/admin/event/single/update`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          eventid: eventid,
+          participantemail: email,
+          participantname: name,
+          participantphone: phone,
+          college: college,
+          course: course,
+          paymentpaid: payment,
+          userid: userid,
+        }),
+      }
+    );
+    const content = await rawResponse.json();
+    console.log(content);
+    if (content.status == true) {
+      window.location.reload(false);
+    }
+  }
+
+  function editGroupValues(data) {
+    setEmail(data.participant1email);
+    setName(data.participant1name);
+    setPhone(data.participant1phone);
+    setCourse(data.coursename);
+    setCollege(data.collegename);
+    setParticipant2(data.participant2name);
+    setParticipant3(data.participant3name);
+    setParticipant4(data.participant4name);
+    setParticipant5(data.participant5name);
+    setPayment(data.paymentpaid);
+    setUserid(data.id);
+  }
+
+  async function submitGroupValues(e) {
+    var eventid = searchParams.get("eventid");
+    e.preventDefault();
+    const rawResponse = await fetch(
+      `${URL_endpoint}/v1/admin/event/group/update`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          eventid: eventid,
+          participant1email: email,
+          participant1name: name,
+          participant1phone: phone,
+          college: college,
+          course: course,
+          participant2name: participant2 || "",
+          participant3name: participant3 || "",
+          participant4name: participant4 || "",
+          participant5name: participant5 || "",
+          paymentpaid: payment,
+          userid: userid,
+        }),
+      }
+    );
+    const content = await rawResponse.json();
+    console.log(content);
+    if (content.status == true) {
       window.location.reload(false);
     }
   }
@@ -148,7 +252,10 @@ const Events = () => {
                         type="button"
                         className="mb-2 btn btn-primary"
                         data-bs-toggle="modal"
-                        data-bs-target="#exampleModal1"
+                        data-bs-target="#groupEditModal"
+                        onClick={() => {
+                          editGroupValues(d);
+                        }}
                       >
                         Edit
                       </button>
@@ -205,7 +312,10 @@ const Events = () => {
                         type="button"
                         className="btn btn-primary"
                         data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
+                        data-bs-target="#singleEditModal"
+                        onClick={() => {
+                          editSingleValues(d);
+                        }}
                       >
                         Edit
                       </button>
@@ -235,7 +345,7 @@ const Events = () => {
         {/* Single Event Edit Modal Start */}
         <div
           class="modal fade"
-          id="exampleModal"
+          id="singleEditModal"
           tabindex="-1"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
@@ -244,46 +354,7 @@ const Events = () => {
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                  Modal title
-                </h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">...</div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" class="btn btn-primary">
-                  Save changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* Single Event Edit Modal End */}
-
-        {/* Group Event Edit Modal Start */}
-        <div
-          class="modal fade"
-          id="exampleModal1"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
-                  Deleting your record.
+                  Edit Details
                 </h5>
                 <button
                   type="button"
@@ -293,7 +364,94 @@ const Events = () => {
                 ></button>
               </div>
               <div class="modal-body">
-                Your record is going to be deleted. Please confirm.
+                <form>
+                  <div class="modal-body">
+                    <input
+                      name="participantemail"
+                      className="mb-3 form-control"
+                      type="email"
+                      placeholder="Email"
+                      aria-label="email"
+                      aria-describedby="basic-addon1"
+                      value={name}
+                      onChange={(e) => {
+                        setName(e.target.value);
+                      }}
+                      required
+                    />
+                    <input
+                      name="participantname"
+                      className="mb-3 form-control"
+                      type="text"
+                      placeholder="Full Name"
+                      aria-label="Username"
+                      aria-describedby="basic-addon1"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
+                      required
+                    />
+                    <input
+                      name="participantphone"
+                      className="mb-3 form-control"
+                      type="text"
+                      placeholder="Phone Number"
+                      aria-label="phonenumber"
+                      aria-describedby="basic-addon1"
+                      value={phone}
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                      }}
+                      required
+                    />
+                    <input
+                      name="college"
+                      className="mb-3 form-control"
+                      type="text"
+                      placeholder="College Name"
+                      aria-label="college"
+                      aria-describedby="basic-addon1"
+                      value={college}
+                      onChange={(e) => {
+                        setCollege(e.target.value);
+                      }}
+                      required
+                    />
+                    <input
+                      name="course"
+                      className="mb-3 form-control"
+                      type="text"
+                      placeholder="Course Name"
+                      aria-label="course"
+                      aria-describedby="basic-addon1"
+                      value={course}
+                      onChange={(e) => {
+                        setCourse(e.target.value);
+                      }}
+                      required
+                    />
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="flexCheckIndeterminate"
+                        checked={payment}
+                        onChange={(e) => {
+                          console.log(e.target.checked);
+                          setPayment(e.target.checked);
+                          e.target.checked ? true : false;
+                        }}
+                      />
+                      <label
+                        class="form-check-label"
+                        for="flexCheckIndeterminate"
+                      >
+                        Payment Paid
+                      </label>
+                    </div>
+                  </div>
+                </form>
               </div>
               <div class="modal-footer">
                 <button
@@ -303,7 +461,194 @@ const Events = () => {
                 >
                   Close
                 </button>
-                <button type="button" class="btn btn-primary">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onClick={(e) => {
+                    submitSingleValues(e);
+                  }}
+                >
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* <SingleModalEdit /> */}
+        {/* Single Event Edit Modal End */}
+
+        {/* Group Event Edit Modal Start */}
+        {/* <GroupModalEdit/> */}
+        <div
+          class="modal fade"
+          id="groupEditModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Edit your record.
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <input
+                  name="participantemail"
+                  className="mb-3 form-control"
+                  type="email"
+                  placeholder="Email"
+                  aria-label="email"
+                  aria-describedby="basic-addon1"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  value={email}
+                  required
+                />
+                <input
+                  name="participantname"
+                  className="mb-3 form-control"
+                  type="text"
+                  placeholder="Full Name"
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  required
+                />
+                <input
+                  name="participantphone"
+                  className="mb-3 form-control"
+                  type="text"
+                  placeholder="Phone Number"
+                  aria-label="phonenumber"
+                  aria-describedby="basic-addon1"
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                  }}
+                  value={phone}
+                  required
+                />
+                <input
+                  name="college"
+                  className="mb-3 form-control"
+                  type="text"
+                  placeholder="College Name"
+                  aria-label="college"
+                  aria-describedby="basic-addon1"
+                  value={college}
+                  onChange={(e) => {
+                    setCollege(e.target.value);
+                  }}
+                  required
+                />
+                <input
+                  name="course"
+                  className="mb-3 form-control"
+                  type="text"
+                  placeholder="Course Name"
+                  aria-label="course"
+                  aria-describedby="basic-addon1"
+                  value={course}
+                  onChange={(e) => {
+                    setCourse(e.target.value);
+                  }}
+                  required
+                />
+                <input
+                  name="course"
+                  className="mb-3 form-control"
+                  type="text"
+                  placeholder="Participant 2"
+                  aria-label="course"
+                  aria-describedby="basic-addon1"
+                  value={participant2}
+                  onChange={(e) => {
+                    setParticipant2(e.target.value);
+                  }}
+                  required
+                />
+                <input
+                  name="course"
+                  className="mb-3 form-control"
+                  type="text"
+                  placeholder="Participant 3"
+                  aria-label="course"
+                  aria-describedby="basic-addon1"
+                  value={participant3}
+                  onChange={(e) => {
+                    setParticipant3(e.target.value);
+                  }}
+                  required
+                />
+                <input
+                  name="course"
+                  className="mb-3 form-control"
+                  type="text"
+                  placeholder="Participant 4"
+                  aria-label="course"
+                  aria-describedby="basic-addon1"
+                  value={participant4}
+                  onChange={(e) => {
+                    setParticipant4(e.target.value);
+                  }}
+                  required
+                />
+                <input
+                  name="course"
+                  className="mb-3 form-control"
+                  type="text"
+                  placeholder="Participant 5"
+                  aria-label="course"
+                  aria-describedby="basic-addon1"
+                  value={participant5}
+                  onChange={(e) => {
+                    setParticipant5(e.target.value);
+                  }}
+                  required
+                />
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="flexCheckIndeterminate"
+                    checked={payment}
+                    onChange={(e) => {
+                      console.log(e.target.checked);
+                      setPayment(e.target.checked);
+                      e.target.checked ? true : false;
+                    }}
+                  />
+                  <label class="form-check-label" for="flexCheckIndeterminate">
+                    Payment Paid
+                  </label>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onClick={(e) => {
+                    submitGroupValues(e);
+                  }}
+                >
                   Save changes
                 </button>
               </div>
