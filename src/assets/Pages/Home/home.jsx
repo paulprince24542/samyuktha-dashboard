@@ -460,7 +460,6 @@ const Home = () => {
                                   aria-label={`Participant ${i} Name`}
                                   value={groupData[`participant${i}name`]}
                                   onChange={handleGroupInputChange}
-                                  required
                                 />
                               </div>
                               <div className="col-md-6">
@@ -472,7 +471,6 @@ const Home = () => {
                                   aria-label={`Participant ${i} Phone`}
                                   value={groupData[`participant${i}phone`]}
                                   onChange={handleGroupInputChange}
-                                  required
                                 />
                               </div>
                             </div>
