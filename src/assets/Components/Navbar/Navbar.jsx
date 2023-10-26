@@ -36,7 +36,7 @@ const Navbar = () => {
     {
       name: "Technical Quiz",
       id: "831868d2-a0ee-4cd9-bcb6-bc352774a7c1",
-      count: 1,
+      count: 2,
     },
     {
       name: "Spot Dance",

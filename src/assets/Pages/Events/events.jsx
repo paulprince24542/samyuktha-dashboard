@@ -46,6 +46,12 @@ const Events = () => {
     console.log("Fetching Data");
     var participantCount = searchParams.get("count");
     var eventid = searchParams.get("eventid");
+    var getEventname = await fetch(
+      `${URL_endpoint}/v1/admin/event/?eventid=${eventid}`
+    );
+    var eventName = await getEventname.json();
+    localStorage.setItem("eventname", eventName.data[0].eventname);
+    setEventName(eventName.data[0].eventname)
     if (participantCount == 1) {
       try {
         var API_URL = `${URL_endpoint}/v1/admin/event/single?eventid=${eventid}`;
@@ -53,7 +59,6 @@ const Events = () => {
         const responseJson = await response.json();
         console.log(responseJson);
         setData(responseJson.data);
-        localStorage.setItem("eventname", responseJson.data[0].eventname);
         setCount(1);
         if (responseJson.data.length > 0) {
           setStatus(true);
@@ -68,7 +73,6 @@ const Events = () => {
         const responseJson = await response.json();
         console.log(responseJson);
         setData(responseJson.data);
-        localStorage.setItem("eventname", "New");
         setCount(2);
         if (responseJson.data.length > 0) {
           setStatus(true);
@@ -210,12 +214,12 @@ const Events = () => {
     <>
       <Navbar />
       <div className="container-fluid">
-        <h3 className="mt-5 mb-3">{localStorage.getItem("eventname")} Event</h3>
+        <h3 className="mt-5 mb-3">{event} Event</h3>
         {count == 2 ? (
           <table className="table table-hover">
             <thead>
               <tr>
-                <th scope="col">id</th>
+                <th scope="col">Id</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Phone</th>
@@ -239,10 +243,10 @@ const Events = () => {
                     <td>{d.participant1phone}</td>
                     <td>{d.coursename}</td>
                     <td>{d.collegename}</td>
-                    <td>{d.participant2name || "Null"}</td>
-                    <td>{d.participant3name || "Null"}</td>
-                    <td>{d.participant4name || "Null"}</td>
-                    <td>{d.participant5name || "Null"}</td>
+                    <td>{d.participant2name || "NIL"}</td>
+                    <td>{d.participant3name || "NIL"}</td>
+                    <td>{d.participant4name || "NIL"}</td>
+                    <td>{d.participant5name || "NIL"}</td>
                     <td>{JSON.stringify(d.paymentpaid)}</td>
                     <td className="d-flex justify-content-evenly flex-column">
                       {/* <button type="button" className="mb-2 btn btn-success">
