@@ -52,7 +52,7 @@ const Home = () => {
       eventId: "5f32aa49-a0bb-4ce7-af96-2db5266f4753",
       eventName: "Ideathon",
       eventType: "group",
-      teamStrength: "3",
+      teamStrength: "4",
     },
     {
       eventId: "5faf4f42-fee6-4c80-bb70-5d4e022d4c7a",
@@ -70,7 +70,7 @@ const Home = () => {
       eventId: "831868d2-a0ee-4cd9-bcb6-bc352774a7c1",
       eventName: "Technical Quiz",
       eventType: "group",
-      teamStrength: "3",
+      teamStrength: "4",
     },
     {
       eventId: "71061614-199e-40e4-9659-8d57528af0c1",
@@ -82,13 +82,13 @@ const Home = () => {
       eventId: "c3e39edf-62a1-473e-9e3c-9ad9e67913f1",
       eventName: "Treasure Hunt",
       eventType: "group",
-      teamStrength: "3",
+      teamStrength: "4",
     },
     {
       eventId: "91464529-6176-45b7-9b60-d40b7e9415fc",
       eventName: "Footbal 3 *3",
       eventType: "group",
-      teamStrength: "4",
+      teamStrength: "5",
     },
     {
       eventId: "410a1bc0-050d-4a04-b99f-3b94c0b0d6b4",
@@ -168,7 +168,6 @@ const Home = () => {
   };
 
   const handleGroupReg = async (event) => {
-    console.log("eerg");
     event.preventDefault();
     const rawResponse = await fetch(
       `${URL_endpoint}/v1/admin/event/group/participant/add`,
@@ -405,8 +404,8 @@ const Home = () => {
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body">
-              <form onSubmit={handleGroupReg}>
+            <form onSubmit={handleGroupReg}>
+              <div class="modal-body">
                 <select
                   name="eventid"
                   className="form-select mb-3"
@@ -440,7 +439,52 @@ const Home = () => {
                   required
                 />
 
-                <div className="row">
+
+                {groupData.eventid && (
+                  <div>
+                    {eventData
+                      .filter((event) => event.eventId === groupData.eventid)
+                      .map((selectedEvent) => {
+                        const teamStrength = parseInt(selectedEvent.teamStrength, 10);
+                        const participantInputs = [];
+
+                        for (let i = 1; i <= teamStrength; i++) {
+                          participantInputs.push(
+                            <div className="row" key={i}>
+                              <div className="col-md-6">
+                                <input
+                                  name={`participant${i}name`}
+                                  className="mb-3 form-control"
+                                  type="text"
+                                  placeholder={`Participant ${i} Name`}
+                                  aria-label={`Participant ${i} Name`}
+                                  value={groupData[`participant${i}name`]}
+                                  onChange={handleGroupInputChange}
+                                  required
+                                />
+                              </div>
+                              <div className="col-md-6">
+                                <input
+                                  name={`participant${i}phone`}
+                                  className="mb-3 form-control"
+                                  type="text"
+                                  placeholder={`Participant ${i} Phone`}
+                                  aria-label={`Participant ${i} Phone`}
+                                  value={groupData[`participant${i}phone`]}
+                                  onChange={handleGroupInputChange}
+                                  required
+                                />
+                              </div>
+                            </div>
+                          );
+                        }
+
+                        return participantInputs;
+                      })}
+                  </div>
+                )}
+
+                {/* <div className="row">
                   <div className="col-md-6">
                     <input
                       name="participant1name"
@@ -449,7 +493,7 @@ const Home = () => {
                       placeholder="Participant 1 Name"
                       aria-label="Username"
                       aria-describedby="basic-addon1"
-                      value={groupData.participantname}
+                      value={groupData.participant1name}
                       onChange={handleGroupInputChange}
                       required
                     />
@@ -462,7 +506,7 @@ const Home = () => {
                       placeholder="Participant 1 Phone"
                       aria-label="phonenumber"
                       aria-describedby="basic-addon1"
-                      value={groupData.participantphone}
+                      value={groupData.participant1phone}
                       onChange={handleGroupInputChange}
                       required
                     />
@@ -477,7 +521,7 @@ const Home = () => {
                       placeholder="Participant 2 Name"
                       aria-label="Username"
                       aria-describedby="basic-addon1"
-                      value={groupData.participantname}
+                      value={groupData.participant2name}
                       onChange={handleGroupInputChange}
                       required
                     />
@@ -490,7 +534,7 @@ const Home = () => {
                       placeholder="Participant 2 Phone"
                       aria-label="phonenumber"
                       aria-describedby="basic-addon1"
-                      value={groupData.participantphone}
+                      value={groupData.participant2phone}
                       onChange={handleGroupInputChange}
                       required
                     />
@@ -505,7 +549,7 @@ const Home = () => {
                       placeholder="Participant 3 Name"
                       aria-label="Username"
                       aria-describedby="basic-addon1"
-                      value={groupData.participantname}
+                      value={groupData.participant3name}
                       onChange={handleGroupInputChange}
                     />
                   </div>
@@ -517,7 +561,7 @@ const Home = () => {
                       placeholder="Participant 3 Phone"
                       aria-label="phonenumber"
                       aria-describedby="basic-addon1"
-                      value={groupData.participantphone}
+                      value={groupData.participant3phone}
                       onChange={handleGroupInputChange}
                     />
                   </div>
@@ -531,7 +575,7 @@ const Home = () => {
                       placeholder="Participant 4 Name"
                       aria-label="Username"
                       aria-describedby="basic-addon1"
-                      value={groupData.participantname}
+                      value={groupData.participant4name}
                       onChange={handleGroupInputChange}
                     />
                   </div>
@@ -543,76 +587,77 @@ const Home = () => {
                       placeholder="Participant 4 Phone"
                       aria-label="phonenumber"
                       aria-describedby="basic-addon1"
-                      value={groupData.participantphone}
+                      value={groupData.participant4phone}
                       onChange={handleGroupInputChange}
                     />
                   </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <input
-                        name="participant5name"
-                        className="mb-3 form-control"
-                        type="text"
-                        placeholder="Participant 5 Name"
-                        aria-label="Username"
-                        aria-describedby="basic-addon1"
-                        value={groupData.participantname}
-                        onChange={handleGroupInputChange}
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <input
-                        name="participant5phone"
-                        className="mb-3 form-control"
-                        type="text"
-                        placeholder="Participant 5 Phone"
-                        aria-label="phonenumber"
-                        aria-describedby="basic-addon1"
-                        value={groupData.participantphone}
-                        onChange={handleGroupInputChange}
-                      />
-                    </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <input
+                      name="participant5name"
+                      className="mb-3 form-control"
+                      type="text"
+                      placeholder="Participant 5 Name"
+                      aria-label="Username"
+                      aria-describedby="basic-addon1"
+                      value={groupData.participant5name}
+                      onChange={handleGroupInputChange}
+                    />
                   </div>
-                  <input
-                    name="college"
-                    className="mb-3 form-control"
-                    type="text"
-                    placeholder="College Name"
-                    aria-label="college"
-                    aria-describedby="basic-addon1"
-                    value={groupData.college}
-                    onChange={handleGroupInputChange}
-                    required
-                  />
-                  <input
-                    name="course"
-                    className="mb-3 form-control"
-                    type="text"
-                    placeholder="Course Name"
-                    aria-label="course"
-                    aria-describedby="basic-addon1"
-                    value={groupData.course}
-                    onChange={handleGroupInputChange}
-                    required
-                  />
-                </div>
-                <div class="modal-footer">
-                  <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button type="submit" class="btn btn-primary">
-                    Register
-                  </button>
-                </div>
-              </form>
-            </div>
+                  <div className="col-md-6">
+                    <input
+                      name="participant5phone"
+                      className="mb-3 form-control"
+                      type="text"
+                      placeholder="Participant 5 Phone"
+                      aria-label="phonenumber"
+                      aria-describedby="basic-addon1"
+                      value={groupData.participant5phone}
+                      onChange={handleGroupInputChange}
+                    />
+                  </div>
+                </div> */}
+                <input
+                  name="college"
+                  className="mb-3 form-control"
+                  type="text"
+                  placeholder="College Name"
+                  aria-label="college"
+                  aria-describedby="basic-addon1"
+                  value={groupData.college}
+                  onChange={handleGroupInputChange}
+                  required
+                />
+                <input
+                  name="course"
+                  className="mb-3 form-control"
+                  type="text"
+                  placeholder="Course Name"
+                  aria-label="course"
+                  aria-describedby="basic-addon1"
+                  value={groupData.course}
+                  onChange={handleGroupInputChange}
+                  required
+                />
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  Register
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
+
     </>
   );
 };
