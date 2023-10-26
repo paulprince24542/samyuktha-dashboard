@@ -7,6 +7,8 @@ import { URL_endpoint } from "../../../config";
 
 const Events = () => {
   const Navigate = useNavigate();
+
+  // User Authorization
   useEffect(() => {
     if (localStorage.getItem("userid")) {
       null;
@@ -14,10 +16,12 @@ const Events = () => {
       Navigate("/login");
     }
   }, [localStorage.getItem("userid")]);
+
   const [data, setData] = useState([]);
-  const [event, setEventName] = useState("qwdwqd");
+  const [event, setEventName] = useState("");
   const [count, setCount] = useState(0);
   const [status, setStatus] = useState(false);
+  const [deleteValue, setDeleteValue] = useState();
 
   const [searchParams] = useSearchParams();
 
@@ -151,8 +155,10 @@ const Events = () => {
                       <button
                         type="button"
                         className="btn btn-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteModal"
                         onClick={() => {
-                          deleteParticipant(d.id);
+                          setDeleteValue(d.id);
                         }}
                       >
                         Delete
@@ -206,8 +212,10 @@ const Events = () => {
                       <button
                         type="button"
                         className="btn btn-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteModal"
                         onClick={() => {
-                          deleteParticipant(d.id);
+                          setDeleteValue(d.id);
                         }}
                       >
                         Delete
@@ -275,7 +283,7 @@ const Events = () => {
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                  Modal title
+                  Deleting your record.
                 </h5>
                 <button
                   type="button"
@@ -284,7 +292,9 @@ const Events = () => {
                   aria-label="Close"
                 ></button>
               </div>
-              <div class="modal-body">...</div>
+              <div class="modal-body">
+                Your record is going to be deleted. Please confirm.
+              </div>
               <div class="modal-footer">
                 <button
                   type="button"
@@ -301,6 +311,54 @@ const Events = () => {
           </div>
         </div>
         {/* Group Event Edit Modal End */}
+
+        {/* Delete Modal Start */}
+
+        <div
+          class="modal fade"
+          id="deleteModal"
+          tabindex="-1"
+          aria-labelledby="deleteModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Deleting your record.
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                Your record is going to be deleted. Please confirm.
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  onClick={() => {
+                    deleteParticipant(deleteValue);
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Delete Modal End */}
       </div>
     </>
   );
