@@ -58,7 +58,7 @@ const Home = () => {
       eventId: "5faf4f42-fee6-4c80-bb70-5d4e022d4c7a",
       eventName: "Web Designing",
       eventType: "group",
-      teamStrength: "1",
+      teamStrength: "2",
     },
     {
       eventId: "72c9450f-c062-4115-85d1-7262474b6d92",
@@ -161,7 +161,7 @@ const Home = () => {
     );
     var res = await rawResponse.json();
     console.log(res);
-    if (res.status == true) {
+    if (rawResponse.status == 200) {
       window.alert("Participant Added");
       window.location.reload(false);
     }
@@ -181,7 +181,7 @@ const Home = () => {
       }
     );
     var res = await rawResponse.json();
-    if (res.status == true) {
+    if (rawResponse.status == 200) {
       window.alert("Group Added");
       window.location.reload(false);
       // setGroupData({
@@ -439,13 +439,15 @@ const Home = () => {
                   required
                 />
 
-
                 {groupData.eventid && (
                   <div>
                     {eventData
                       .filter((event) => event.eventId === groupData.eventid)
                       .map((selectedEvent) => {
-                        const teamStrength = parseInt(selectedEvent.teamStrength, 10);
+                        const teamStrength = parseInt(
+                          selectedEvent.teamStrength,
+                          10
+                        );
                         const participantInputs = [];
 
                         for (let i = 1; i <= teamStrength; i++) {
@@ -655,7 +657,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-
     </>
   );
 };
